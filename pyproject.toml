@@ -1,0 +1,39 @@
+[project]
+name = "airflow-providers-mattermost"
+version = "0.1.0"
+description = "Apache Airflow Mattermost provider"
+authors = [
+    {name = "mee7ya", email = "bas9339@gmail.com"},
+]
+dependencies = [
+    "apache-airflow>=2.10.0",
+]
+requires-python = "<3.13, >=3.8"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Framework :: Apache Airflow",
+    "Framework :: Apache Airflow :: Provider",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project.entry-points.apache_airflow_provider]
+provider_info = "airflow_providers_mattermost.__init__:get_provider_info"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.6.3",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.format]
+quote-style = "single"
