@@ -31,9 +31,17 @@ distribution = true
 dev = [
     "ruff>=0.6.3",
 ]
+test = [
+    "pytest>=8.3.3",
+]
 
 [tool.ruff.lint]
 extend-select = ["I"]
 
 [tool.ruff.format]
 quote-style = "single"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]

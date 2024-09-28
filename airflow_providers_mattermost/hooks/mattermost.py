@@ -1,7 +1,7 @@
 from typing import Any
 
-import requests
 from airflow.hooks.base import BaseHook
+from requests import Request, Session
 
 
 class MattermostHook(BaseHook):
@@ -23,18 +23,23 @@ class MattermostHook(BaseHook):
             },
         }
 
-    def get_conn(self) -> Any:
-        # TODO: Sessions
-        raise NotImplementedError()
+    def __init__(self, conn_id: str, logger_name: str | None = None) -> None:
+        super().__init__(logger_name)
+        self.conn_id = conn_id
 
-    def send(self, conn_id: str, channel: str, message: str) -> None:
-        conn = self.get_connection(conn_id)
-        url = f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
-        # TODO: Raise error on bad response
-        requests.post(
-            url,
-            json={
+    def get_conn(self) -> tuple[Request, Session]:
+        conn = self.get_connection(self.conn_id)
+        return Request(
+            'POST', f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
+        ), Session()
+
+    def run(self, channel: str, message: str) -> dict:
+        request, session = self.get_conn()
+        with session:
+            request.json = {
                 'channel': channel,
                 'text': message,
-            },
-        )
+            }
+            response = session.send(request.prepare())
+        response.raise_for_status()
+        return response.json()
