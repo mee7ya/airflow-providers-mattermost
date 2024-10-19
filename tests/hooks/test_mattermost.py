@@ -16,6 +16,7 @@ class TestMattermostHook:
     )
     def test_get_conn_request(self) -> None:
         request, _ = self.hook('mattermost').get_conn()
+
         assert request.method == 'POST'
         assert request.url == 'https://myhost.com:1234/hooks/SECRETVERYKEY'
 
@@ -34,7 +35,8 @@ class TestMattermostHook:
     def test_run(self, patched_send: MagicMock, status_code: int, data: bytes) -> None:
         patched_send.return_value.status_code = status_code
         patched_send.return_value._content = data
-        call = partial(self.hook('mattermost').run, 'general', 'hello')
+
+        call = partial(self.hook('mattermost').run, channel='general', message='hello')
         match status_code:
             case 200:
                 response = call()

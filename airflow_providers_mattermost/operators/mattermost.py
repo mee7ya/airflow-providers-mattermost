@@ -17,4 +17,4 @@ class MattermostOperator(BaseOperator):
         self.message = message
 
     def execute(self, context: Context) -> None:
-        self.hook(self.conn_id).run(self.channel, self.message)
+        self.hook(self.conn_id).run(channel=self.channel, message=self.message)
