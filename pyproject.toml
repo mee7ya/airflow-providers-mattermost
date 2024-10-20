@@ -10,7 +10,8 @@ dependencies = [
 ]
 requires-python = "<3.13, >=3.8"
 readme = "README.md"
-license = {text = "Apache-2.0"}
+license = {file = "LICENSE"}
+keywords = ["apache", "airflow", "mattermost", "provider"]
 classifiers = [
     "Framework :: Apache Airflow",
     "Framework :: Apache Airflow :: Provider",
