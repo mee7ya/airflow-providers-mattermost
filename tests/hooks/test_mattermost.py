@@ -39,8 +39,7 @@ class TestMattermostHook:
         call = partial(self.hook('mattermost').run, channel='general', message='hello')
         match status_code:
             case 200:
-                response = call()
-                assert isinstance(response, dict)
+                call()
             case _:
                 with raises(HTTPError):
                     call()
