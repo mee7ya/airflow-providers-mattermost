@@ -21,7 +21,7 @@ To send messages within DAGs, supports templating
 ```python
 from airflow.decorators import dag
 
-from airflow_providers_mattermost.operators.mattermost import MattermostOperator
+from airflow_providers_mattermost.operators import MattermostOperator
 
 
 @dag(
@@ -48,7 +48,7 @@ Can be used with `on_*_callbacks` to notify about Task/DAG status
 from airflow.decorators import dag
 
 from airflow_providers_mattermost.notifiers import MattermostNotifier
-from airflow_providers_mattermost.operators.mattermost import MattermostOperator
+from airflow_providers_mattermost.operators import MattermostOperator
 
 
 @dag(
