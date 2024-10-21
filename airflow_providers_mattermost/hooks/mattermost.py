@@ -33,7 +33,7 @@ class MattermostHook(BaseHook):
             'POST', f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
         ), Session()
 
-    def run(self, channel: str, message: str) -> dict:
+    def run(self, channel: str, message: str) -> None:
         request, session = self.get_conn()
         with session:
             request.json = {
@@ -42,4 +42,3 @@ class MattermostHook(BaseHook):
             }
             response = session.send(request.prepare())
         response.raise_for_status()
-        return response.json()
