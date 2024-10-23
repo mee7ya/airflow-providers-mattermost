@@ -36,7 +36,12 @@ class TestMattermostHook:
         patched_send.return_value.status_code = status_code
         patched_send.return_value._content = data
 
-        call = partial(self.hook('mattermost').run, channel='general', message='hello')
+        call = partial(
+            self.hook('mattermost').run,
+            channel='general',
+            message='hello',
+            username='Airflow',
+        )
         match status_code:
             case 200:
                 call()

@@ -33,12 +33,13 @@ class MattermostHook(BaseHook):
             'POST', f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
         ), Session()
 
-    def run(self, channel: str, message: str) -> None:
+    def run(self, channel: str, message: str, username: str | None = None) -> None:
         request, session = self.get_conn()
         with session:
             request.json = {
                 'channel': channel,
                 'text': message,
+                'username': username,
             }
             response = session.send(request.prepare())
         response.raise_for_status()

@@ -12,6 +12,7 @@ class TestMattermostNotifier:
             conn_id='mattermost',
             channel='general',
             message='hello',
+            username='Airflow',
         )
 
         notifier.notify(MagicMock())
@@ -19,4 +20,5 @@ class TestMattermostNotifier:
         notifier.hook.return_value.run.assert_called_once_with(
             channel='general',
             message='hello',
+            username='Airflow',
         )

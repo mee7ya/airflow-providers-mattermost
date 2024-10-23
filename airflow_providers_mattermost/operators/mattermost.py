@@ -10,11 +10,22 @@ class MattermostOperator(BaseOperator):
     ]
     hook = MattermostHook
 
-    def __init__(self, *, conn_id: str, channel: str, message: str, **kwargs) -> None:
+    def __init__(
+        self,
+        *,
+        conn_id: str,
+        channel: str,
+        message: str,
+        username: str | None,
+        **kwargs,
+    ) -> None:
         super().__init__(**kwargs)
         self.conn_id = conn_id
         self.channel = channel
         self.message = message
+        self.username = username
 
     def execute(self, context: Context) -> None:
-        self.hook(self.conn_id).run(channel=self.channel, message=self.message)
+        self.hook(self.conn_id).run(
+            channel=self.channel, message=self.message, username=self.username
+        )

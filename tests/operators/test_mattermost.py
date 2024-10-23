@@ -13,6 +13,7 @@ class TestMattermostOperator:
             conn_id='mattermost',
             channel='general',
             message='hello',
+            username='Airflow',
         )
 
         # We get warning from Safeguard about executing operators outside TaskInstance
@@ -22,4 +23,5 @@ class TestMattermostOperator:
         operator.hook.return_value.run.assert_called_once_with(
             channel='general',
             message='hello',
+            username='Airflow',
         )
