@@ -1,11 +1,11 @@
-__version__ = '0.1.0'
+from ._version import __version__
 
 
 def get_provider_info() -> dict:
     return {
         'package-name': 'airflow-providers-mattermost',
         'name': 'Mattermost',
-        'description': 'Mattermost Apache Airflow providers',
+        'description': 'Mattermost',
         'connection-types': [
             {
                 'connection-type': 'mattermost',
