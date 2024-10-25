@@ -1,7 +1,10 @@
+import logging
 from typing import Any
 
 from airflow.hooks.base import BaseHook
 from requests import Request, Session
+
+log = logging.getLogger(__name__)
 
 
 class MattermostHook(BaseHook):
@@ -33,13 +36,32 @@ class MattermostHook(BaseHook):
             'POST', f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
         ), Session()
 
-    def run(self, channel: str, message: str, username: str | None = None) -> None:
+    def run(
+        self,
+        channel: str,
+        message: str,
+        username: str | None = None,
+        icon_url: str | None = None,
+        icon_emoji: str | None = None,
+        type_: str | None = None,
+        props: dict[str, str] | None = None,
+    ) -> None:
+        if icon_url is not None and icon_emoji is not None:
+            log.warning("'icon_emoji' will override 'icon_url'")
+
+        if type_ is not None and not type_.startswith('custom_'):
+            raise ValueError("'type_' must start with 'custom_'")
+
         request, session = self.get_conn()
         with session:
             request.json = {
                 'channel': channel,
                 'text': message,
                 'username': username,
+                'icon_url': icon_url,
+                'icon_emoji': icon_emoji,
+                'type': type_,
+                'props': props,
             }
             response = session.send(request.prepare())
         response.raise_for_status()

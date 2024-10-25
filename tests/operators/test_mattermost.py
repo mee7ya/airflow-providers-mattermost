@@ -14,6 +14,12 @@ class TestMattermostOperator:
             channel='general',
             message='hello',
             username='Airflow',
+            icon_url='https://cdn.something.com/icon.png',
+            icon_emoji='grin',
+            type_='custom_type',
+            props={
+                'card': 'text',
+            },
         )
 
         # We get warning from Safeguard about executing operators outside TaskInstance
@@ -24,4 +30,10 @@ class TestMattermostOperator:
             channel='general',
             message='hello',
             username='Airflow',
+            icon_url='https://cdn.something.com/icon.png',
+            icon_emoji='grin',
+            type_='custom_type',
+            props={
+                'card': 'text',
+            },
         )

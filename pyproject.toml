@@ -30,9 +30,8 @@ provider_info = "airflow_providers_mattermost.__init__:get_provider_info"
 distribution = true
 
 [tool.pdm.version]
-source = "scm"
-write_to = "airflow_providers_mattermost/_version.py"
-write_template = "__version__ = '{}'\n"
+source = "file"
+path = "airflow_providers_mattermost/__init__.py"
 
 [tool.pdm.dev-dependencies]
 dev = [
