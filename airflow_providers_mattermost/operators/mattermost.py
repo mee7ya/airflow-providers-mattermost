@@ -1,7 +1,8 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from airflow.models import BaseOperator
 
+from airflow_providers_mattermost.common.types import Priority
 from airflow_providers_mattermost.hooks import MattermostHook
 
 if TYPE_CHECKING:
@@ -23,6 +24,10 @@ class MattermostOperator(BaseOperator):
         icon_emoji: str | None = None,
         type_: str | None = None,
         props: dict[str, str] | None = None,
+        priority: Priority = 'standard',
+        requested_ack: bool = False,
+        persistent_notifications: bool = False,
+        session_kwargs: dict[str, Any] | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -34,6 +39,10 @@ class MattermostOperator(BaseOperator):
         self.icon_emoji = icon_emoji
         self.type_ = type_
         self.props = props
+        self.priority = priority
+        self.requested_ack = requested_ack
+        self.persistent_notifications = persistent_notifications
+        self.session_kwargs = session_kwargs
 
     def execute(self, context: 'Context') -> None:
         self.hook(self.conn_id).run(
@@ -44,4 +53,8 @@ class MattermostOperator(BaseOperator):
             icon_emoji=self.icon_emoji,
             type_=self.type_,
             props=self.props,
+            priority=self.priority,
+            requested_ack=self.requested_ack,
+            persistent_notifications=self.persistent_notifications,
+            session_kwargs=self.session_kwargs,
         )

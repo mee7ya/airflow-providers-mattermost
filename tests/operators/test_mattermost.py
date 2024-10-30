@@ -20,6 +20,10 @@ class TestMattermostOperator:
             props={
                 'card': 'text',
             },
+            priority='standard',
+            requested_ack=False,
+            persistent_notifications=False,
+            session_kwargs=None,
         )
 
         # We get warning from Safeguard about executing operators outside TaskInstance
@@ -36,4 +40,8 @@ class TestMattermostOperator:
             props={
                 'card': 'text',
             },
+            priority='standard',
+            requested_ack=False,
+            persistent_notifications=False,
+            session_kwargs=None,
         )

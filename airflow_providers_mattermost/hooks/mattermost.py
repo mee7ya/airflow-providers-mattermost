@@ -1,8 +1,10 @@
 import logging
-from typing import Any
+from typing import Any, get_args
 
 from airflow.hooks.base import BaseHook
 from requests import Request, Session
+
+from airflow_providers_mattermost.common.types import Priority
 
 log = logging.getLogger(__name__)
 
@@ -45,12 +47,23 @@ class MattermostHook(BaseHook):
         icon_emoji: str | None = None,
         type_: str | None = None,
         props: dict[str, str] | None = None,
+        priority: Priority = 'standard',
+        requested_ack: bool = False,
+        persistent_notifications: bool = False,
+        session_kwargs: dict[str, Any] | None = None,
     ) -> None:
+        if type_ is not None and not type_.startswith('custom_'):
+            raise ValueError("'type_' must start with 'custom_'")
+
+        if priority not in get_args(Priority):
+            raise ValueError(
+                "'priority' must be one of 'standard', 'important', 'urgent'"
+            )
+
         if icon_url is not None and icon_emoji is not None:
             log.warning("'icon_emoji' will override 'icon_url'")
 
-        if type_ is not None and not type_.startswith('custom_'):
-            raise ValueError("'type_' must start with 'custom_'")
+        session_kwargs = session_kwargs or {}
 
         request, session = self.get_conn()
         with session:
@@ -62,6 +75,11 @@ class MattermostHook(BaseHook):
                 'icon_emoji': icon_emoji,
                 'type': type_,
                 'props': props,
+                'priority': {
+                    'priority': priority,
+                    'requested_ack': requested_ack,
+                    'persistent_notifications': persistent_notifications,
+                },
             }
-            response = session.send(request.prepare())
+            response = session.send(request.prepare(), **session_kwargs)
         response.raise_for_status()
