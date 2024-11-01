@@ -10,8 +10,12 @@ log = logging.getLogger(__name__)
 
 
 class MattermostHook(BaseHook):
+    """
+    Airflow's hook for interacting with Mattermost Webhook
+    """
+
     conn_name_attr = 'mattermost_conn_id'
-    default_conn_name = 'mattermost_default'
+    default_conn_name = 'mattermost_default'  #
     conn_type = 'mattermost'
     hook_name = 'Mattermost'
 
@@ -33,6 +37,9 @@ class MattermostHook(BaseHook):
         self.conn_id = conn_id
 
     def get_conn(self) -> tuple[Request, Session]:
+        """
+        :meta private:
+        """
         conn = self.get_connection(self.conn_id)
         return Request(
             'POST', f'{conn.schema}://{conn.host}:{conn.port}/hooks/{conn.password}'
@@ -50,8 +57,15 @@ class MattermostHook(BaseHook):
         priority: Priority = 'standard',
         requested_ack: bool = False,
         persistent_notifications: bool = False,
-        session_kwargs: dict[str, Any] | None = None,
     ) -> None:
+        """
+        Shouldn't be called directly.
+        Calls the webhook with passed parameters.
+        For params description refer to Mattermost `webhooks`_.
+
+        .. _webhooks:
+           https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
+        """
         if type_ is not None and not type_.startswith('custom_'):
             raise ValueError("'type_' must start with 'custom_'")
 
@@ -62,8 +76,6 @@ class MattermostHook(BaseHook):
 
         if icon_url is not None and icon_emoji is not None:
             log.warning("'icon_emoji' will override 'icon_url'")
-
-        session_kwargs = session_kwargs or {}
 
         request, session = self.get_conn()
         with session:
@@ -81,5 +93,5 @@ class MattermostHook(BaseHook):
                     'persistent_notifications': persistent_notifications,
                 },
             }
-            response = session.send(request.prepare(), **session_kwargs)
+            response = session.send(request.prepare())
         response.raise_for_status()

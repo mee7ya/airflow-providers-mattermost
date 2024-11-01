@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from airflow.notifications.basenotifier import BaseNotifier
 
@@ -10,8 +10,14 @@ if TYPE_CHECKING:
 
 
 class MattermostNotifier(BaseNotifier):
+    """
+    Notifier to be used with ``on_x_callback``.
+
+    Shares same params as :class:`airflow_providers_mattermost.operators.MattermostOperator`
+    """
+
     template_fields = ['message', 'props']
-    hook = MattermostHook
+    hook = MattermostHook  #: :meta private:
 
     def __init__(
         self,
@@ -26,7 +32,6 @@ class MattermostNotifier(BaseNotifier):
         priority: Priority = 'standard',
         requested_ack: bool = False,
         persistent_notifications: bool = False,
-        session_kwargs: dict[str, Any] | None = None,
     ) -> None:
         super().__init__()
         self.conn_id = conn_id
@@ -40,9 +45,12 @@ class MattermostNotifier(BaseNotifier):
         self.priority = priority
         self.requested_ack = requested_ack
         self.persistent_notifications = persistent_notifications
-        self.session_kwargs = session_kwargs
 
     def notify(self, context: 'Context') -> None:
+        """
+        :meta private:
+        """
+
         self.hook(self.conn_id).run(
             channel=self.channel,
             message=self.message,
@@ -54,5 +62,4 @@ class MattermostNotifier(BaseNotifier):
             priority=self.priority,
             requested_ack=self.requested_ack,
             persistent_notifications=self.persistent_notifications,
-            session_kwargs=self.session_kwargs,
         )

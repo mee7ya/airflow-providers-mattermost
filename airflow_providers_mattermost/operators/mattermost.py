@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from airflow.models import BaseOperator
 
@@ -10,8 +10,18 @@ if TYPE_CHECKING:
 
 
 class MattermostOperator(BaseOperator):
+    """
+    Operator to be used inside Tasks.
+
+    Calls the webhook with passed parameters.
+    For params description refer to Mattermost `webhooks`_.
+
+    .. _webhooks:
+       https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
+    """
+
     template_fields = ['message', 'props']
-    hook = MattermostHook
+    hook = MattermostHook  #: :meta private:
 
     def __init__(
         self,
@@ -27,7 +37,6 @@ class MattermostOperator(BaseOperator):
         priority: Priority = 'standard',
         requested_ack: bool = False,
         persistent_notifications: bool = False,
-        session_kwargs: dict[str, Any] | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -42,9 +51,14 @@ class MattermostOperator(BaseOperator):
         self.priority = priority
         self.requested_ack = requested_ack
         self.persistent_notifications = persistent_notifications
-        self.session_kwargs = session_kwargs
 
     def execute(self, context: 'Context') -> None:
+        """
+        Shouldn't be called directly. Used by Airflow TaskInstance
+
+        :meta private:
+        """
+
         self.hook(self.conn_id).run(
             channel=self.channel,
             message=self.message,
@@ -56,5 +70,4 @@ class MattermostOperator(BaseOperator):
             priority=self.priority,
             requested_ack=self.requested_ack,
             persistent_notifications=self.persistent_notifications,
-            session_kwargs=self.session_kwargs,
         )

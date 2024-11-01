@@ -72,7 +72,6 @@ class TestMattermostHook:
             priority=priority,
             requested_ack=False,
             persistent_notifications=False,
-            session_kwargs=None,
         )
         with (
             raises(ValueError, match="'type_' must start with 'custom_'")

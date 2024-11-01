@@ -22,7 +22,6 @@ class TestMattermostNotifier:
             priority='standard',
             requested_ack=False,
             persistent_notifications=False,
-            session_kwargs=None,
         )
 
         notifier.notify(MagicMock())
@@ -40,5 +39,4 @@ class TestMattermostNotifier:
             priority='standard',
             requested_ack=False,
             persistent_notifications=False,
-            session_kwargs=None,
         )

@@ -23,11 +23,8 @@ class TestMattermostOperator:
             priority='standard',
             requested_ack=False,
             persistent_notifications=False,
-            session_kwargs=None,
         )
 
-        # We get warning from Safeguard about executing operators outside TaskInstance
-        # would be nice to suppress it for tests
         operator.execute(MagicMock())
 
         operator.hook.return_value.run.assert_called_once_with(
@@ -43,5 +40,4 @@ class TestMattermostOperator:
             priority='standard',
             requested_ack=False,
             persistent_notifications=False,
-            session_kwargs=None,
         )
