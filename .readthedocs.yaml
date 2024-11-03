@@ -1,0 +1,12 @@
+version: 2
+
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: "3.12"
+  jobs:
+    pre_create_environment:
+      - python -c "$(curl -sSL https://pdm-project.org/install-pdm.py)" --version 2.20.0.post1
+  commands:
+    - pdm install -G docs
+    - sphinx-build -M html docs/source docs/build

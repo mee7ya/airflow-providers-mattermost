@@ -14,14 +14,30 @@ class TestMattermostOperator:
             channel='general',
             message='hello',
             username='Airflow',
+            icon_url='https://cdn.something.com/icon.png',
+            icon_emoji='grin',
+            type_='custom_type',
+            props={
+                'card': 'text',
+            },
+            priority='standard',
+            requested_ack=False,
+            persistent_notifications=False,
         )
 
-        # We get warning from Safeguard about executing operators outside TaskInstance
-        # would be nice to suppress it for tests
         operator.execute(MagicMock())
 
         operator.hook.return_value.run.assert_called_once_with(
             channel='general',
             message='hello',
             username='Airflow',
+            icon_url='https://cdn.something.com/icon.png',
+            icon_emoji='grin',
+            type_='custom_type',
+            props={
+                'card': 'text',
+            },
+            priority='standard',
+            requested_ack=False,
+            persistent_notifications=False,
         )
