@@ -1,5 +1,7 @@
 Notifiers
-_________
+=========
 
-.. automodule:: airflow_providers_mattermost.notifiers
+.. automodule:: notifiers.mattermost
    :members:
+   :undoc-members:
+   :show-inheritance:

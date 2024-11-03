@@ -1,17 +1,14 @@
 version: 2
 
-python:
-  install:
-    - requirements: requirements.txt
-
 build:
   os: ubuntu-lts-latest
   tools:
     python: "3.12"
   jobs:
-    pre_create_environment:
+    post_create_environment:
       - python -c "$(curl -sSL https://pdm-project.org/install-pdm.py)" --version 2.20.0.post1 --path ~/.local/pdm
-      - ~/.local/pdm/bin/pdm export -G docs > requirements.txt
+    post_install:
+      - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH ~/.local/pdm/bin/pdm sync -G docs
 
 sphinx:
   configuration: docs/source/conf.py

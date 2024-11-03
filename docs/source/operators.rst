@@ -1,5 +1,7 @@
 Operators
-_________
+=========
 
-.. automodule:: airflow_providers_mattermost.operators
+.. automodule:: operators.mattermost
    :members:
+   :undoc-members:
+   :show-inheritance:

@@ -20,7 +20,7 @@ class MattermostOperator(BaseOperator):
        https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
     """
 
-    template_fields = ['message', 'props']
+    template_fields = ['message', 'props']  #: :meta private:
     hook = MattermostHook  #: :meta private:
 
     def __init__(

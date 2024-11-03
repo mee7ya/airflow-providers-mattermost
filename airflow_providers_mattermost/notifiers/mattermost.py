@@ -13,10 +13,10 @@ class MattermostNotifier(BaseNotifier):
     """
     Notifier to be used with ``on_x_callback``.
 
-    Shares same params as :class:`airflow_providers_mattermost.operators.MattermostOperator`
+    Shares same params as :class:`.MattermostOperator`
     """
 
-    template_fields = ['message', 'props']
+    template_fields = ['message', 'props']  #: :meta private:
     hook = MattermostHook  #: :meta private:
 
     def __init__(
