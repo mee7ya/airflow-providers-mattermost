@@ -1,5 +1,10 @@
 # Apache Airflow Mattermost Provider
 
+![GitHub branch check runs](https://img.shields.io/github/check-runs/mee7ya/airflow-providers-mattermost/main)
+![Read the Docs (version)](https://img.shields.io/readthedocs/airflow-providers-mattermost/latest)
+![PyPI - Version](https://img.shields.io/pypi/v/airflow-providers-mattermost)
+
+
 The package is [Apache Airflow](https://airflow.apache.org/) 
 [provider](https://airflow.apache.org/docs/apache-airflow-providers/#provider-packages)
 for integrating with [Mattermost](https://mattermost.com/) using 
@@ -32,7 +37,8 @@ def mattermost():
         task_id='send_message_to_mattermost',
         conn_id='mattermost',
         channel='off-topic',
-        message='Hello from {{ dag.dag_id }} in Airflow!'
+        message='Hello from {{ dag.dag_id }} in Airflow!',
+        username='Airflow',
     )
 
     send_message_to_mattermost
@@ -57,11 +63,13 @@ from airflow_providers_mattermost.operators import MattermostOperator
         conn_id='mattermost',
         channel='off-topic',
         message='Dag ID: {{ dag.dag_id }} , Run ID: {{ run_id }} has completed',
+        username='Airflow',
     ),
     on_failure_callback=MattermostNotifier(
         conn_id='mattermost',
         channel='off-topic',
         message='Dag ID: {{ dag.dag_id }} , Run ID: {{ run_id }} has failed',
+        username='Airflow',
     ),
 )
 def mattermost():
@@ -69,7 +77,8 @@ def mattermost():
         task_id='send_message_to_mattermost',
         conn_id='mattermost',
         channel='off-topic',
-        message='Hello from {{ dag.dag_id }} in Airflow!'
+        message='Hello from {{ dag.dag_id }} in Airflow!',
+        username='Airflow',
     )
 
     send_message_to_mattermost

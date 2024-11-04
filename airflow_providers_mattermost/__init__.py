@@ -5,7 +5,7 @@ def get_provider_info() -> dict:
     return {
         'package-name': 'airflow-providers-mattermost',
         'name': 'Mattermost',
-        'description': 'Mattermost',
+        'description': '`Mattermost <https://mattermost.com/>`__\n',
         'connection-types': [
             {
                 'connection-type': 'mattermost',
