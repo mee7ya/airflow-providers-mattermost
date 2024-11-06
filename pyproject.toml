@@ -13,25 +13,37 @@ readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["apache", "airflow", "mattermost", "provider"]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Framework :: Apache Airflow",
     "Framework :: Apache Airflow :: Provider",
 ]
 dynamic = ["version"]
 
+[dependency-groups]
+dev = ["ruff>=0.7.2"]
+docs = ["sphinx>=8.1.3", "sphinx-rtd-theme>=3.0.1"]
+test = ["pytest>=8.3.3"]
+
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["setuptools >= 75.3"]
+build-backend = "setuptools.build_meta"
 
 [project.entry-points.apache_airflow_provider]
 provider_info = "airflow_providers_mattermost.__init__:get_provider_info"
 
 
-[tool.pdm]
-distribution = true
+[tool.setuptools]
+packages = [
+    "airflow_providers_mattermost",
+]
 
-[tool.pdm.version]
-source = "file"
-path = "airflow_providers_mattermost/__init__.py"
+[tool.setuptools.dynamic]
+version = {attr = "airflow_providers_mattermost.__version__"}
+
+
+[tool.uv]
+default-groups = ["dev", "test", "docs"]
+
 
 [tool.ruff.lint]
 extend-select = ["I", "W"]
@@ -39,12 +51,8 @@ extend-select = ["I", "W"]
 [tool.ruff.format]
 quote-style = "single"
 
+
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
 ]
-
-[dependency-groups]
-dev = ["ruff>=0.7.2"]
-docs = ["sphinx>=8.1.3", "sphinx-rtd-theme>=3.0.1"]
-test = ["pytest>=8.3.3"]

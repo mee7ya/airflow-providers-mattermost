@@ -24,7 +24,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-    - name: Setup PDM
-      uses: pdm-project/setup-pdm@v4
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v3
     - name: Publish
-      run: pdm publish
+      run: uv build && uv publish
