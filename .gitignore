@@ -167,3 +167,6 @@ pg_data/
 plugins/
 config/
 dags/
+
+# UV
+.python-version
