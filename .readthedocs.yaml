@@ -6,9 +6,13 @@ build:
     python: "3.12"
   jobs:
     post_create_environment:
-      - curl -LsSf https://astral.sh/uv/install.sh | sh
-    post_install:
-      - uv sync --group docs
+      - curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR=~/.uv sh
+    pre_install:
+      - ~/.uv/bin/uv export --group docs --no-hashes --format requirements-txt > requirements.txt
 
 sphinx:
   configuration: docs/source/conf.py
+
+python:
+   install:
+   - requirements: requirements.txt
