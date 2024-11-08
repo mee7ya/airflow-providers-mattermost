@@ -45,6 +45,9 @@ version = {attr = "airflow_providers_mattermost.__version__"}
 default-groups = ["dev", "test", "docs"]
 
 
+[tool.ruff]
+extend-exclude = ["volumes"]
+
 [tool.ruff.lint]
 extend-select = ["I", "W"]
 

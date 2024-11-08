@@ -8,6 +8,8 @@ from airflow_providers_mattermost.hooks import MattermostHook
 if TYPE_CHECKING:
     from airflow.utils.context import Context
 
+    from airflow_providers_mattermost.common.attachments import Attachment
+
 
 class MattermostNotifier(BaseNotifier):
     """
@@ -16,7 +18,7 @@ class MattermostNotifier(BaseNotifier):
     Shares same params as :class:`.MattermostOperator`
     """
 
-    template_fields = ['message', 'props']  #: :meta private:
+    template_fields = ['message', 'props']
     hook = MattermostHook  #: :meta private:
 
     def __init__(
@@ -24,6 +26,7 @@ class MattermostNotifier(BaseNotifier):
         conn_id: str,
         channel: str,
         message: str,
+        attachments: list['Attachment'] | list[dict] | None = None,
         username: str | None = None,
         icon_url: str | None = None,
         icon_emoji: str | None = None,
@@ -37,6 +40,7 @@ class MattermostNotifier(BaseNotifier):
         self.conn_id = conn_id
         self.channel = channel
         self.message = message
+        self.attachments = attachments
         self.username = username
         self.icon_url = icon_url
         self.icon_emoji = icon_emoji
@@ -54,6 +58,7 @@ class MattermostNotifier(BaseNotifier):
         self.hook(self.conn_id).run(
             channel=self.channel,
             message=self.message,
+            attachments=self.attachments,
             username=self.username,
             icon_url=self.icon_url,
             icon_emoji=self.icon_emoji,

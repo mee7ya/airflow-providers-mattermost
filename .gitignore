@@ -170,3 +170,6 @@ dags/
 
 # UV
 .python-version
+
+# VSCode
+.vscode
