@@ -8,7 +8,7 @@ build:
     post_create_environment:
       - curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR=~/.uv sh
     pre_install:
-      - ~/.uv/bin/uv export --group docs --no-hashes --format requirements-txt > requirements.txt
+      - ~/.uv/uv export --group docs --no-hashes --format requirements-txt > requirements.txt
 
 sphinx:
   configuration: docs/source/conf.py
