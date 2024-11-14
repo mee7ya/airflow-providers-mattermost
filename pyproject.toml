@@ -35,6 +35,10 @@ provider_info = "airflow_providers_mattermost.__init__:get_provider_info"
 [tool.setuptools]
 packages = [
     "airflow_providers_mattermost",
+    "airflow_providers_mattermost.common",
+    "airflow_providers_mattermost.hooks",
+    "airflow_providers_mattermost.operators",
+    "airflow_providers_mattermost.notifiers",
 ]
 
 [tool.setuptools.dynamic]
