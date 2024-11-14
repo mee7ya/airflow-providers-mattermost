@@ -1,9 +1,11 @@
 import logging
+from dataclasses import asdict
 from typing import Any, get_args
 
 from airflow.hooks.base import BaseHook
 from requests import Request, Session
 
+from airflow_providers_mattermost.common.attachments import Attachment
 from airflow_providers_mattermost.common.types import Priority
 
 log = logging.getLogger(__name__)
@@ -15,7 +17,7 @@ class MattermostHook(BaseHook):
     """
 
     conn_name_attr = 'mattermost_conn_id'
-    default_conn_name = 'mattermost_default'  #
+    default_conn_name = 'mattermost_default'
     conn_type = 'mattermost'
     hook_name = 'Mattermost'
 
@@ -48,7 +50,8 @@ class MattermostHook(BaseHook):
     def run(
         self,
         channel: str,
-        message: str,
+        message: str | None = None,
+        attachments: list[Attachment] | list[dict] | None = None,
         username: str | None = None,
         icon_url: str | None = None,
         icon_emoji: str | None = None,
@@ -66,6 +69,9 @@ class MattermostHook(BaseHook):
         .. _webhooks:
            https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
         """
+        if message is None and not attachments:
+            raise ValueError("Either 'message' or 'attachments' must be set")
+
         if type_ is not None and not type_.startswith('custom_'):
             raise ValueError("'type_' must start with 'custom_'")
 
@@ -82,6 +88,14 @@ class MattermostHook(BaseHook):
             request.json = {
                 'channel': channel,
                 'text': message,
+                'attachments': [
+                    asdict(attachment)
+                    if isinstance(attachment, Attachment)
+                    else attachment
+                    for attachment in attachments
+                ]
+                if attachments is not None
+                else attachments,
                 'username': username,
                 'icon_url': icon_url,
                 'icon_emoji': icon_emoji,

@@ -13,6 +13,7 @@ class TestMattermostOperator:
             conn_id='mattermost',
             channel='general',
             message='hello',
+            attachments=None,
             username='Airflow',
             icon_url='https://cdn.something.com/icon.png',
             icon_emoji='grin',
@@ -30,6 +31,7 @@ class TestMattermostOperator:
         operator.hook.return_value.run.assert_called_once_with(
             channel='general',
             message='hello',
+            attachments=None,
             username='Airflow',
             icon_url='https://cdn.something.com/icon.png',
             icon_emoji='grin',
